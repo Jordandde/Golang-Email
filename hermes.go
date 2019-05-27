@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -18,9 +17,10 @@ func generate( /*username string*/ ) string /*,string*/ {
 	h := hermes.Hermes{
 
 		Product: hermes.Product{
-			Name: "Tugolo",
-			Link: "https://tugolo.com",
-			Logo: "http://www.duchess-france.org/wp-content/uploads/2016/01/gopher.png",
+			Name:      "Tugolo",
+			Link:      "https://tugolo.com",
+			Logo:      "http://www.duchess-france.org/wp-content/uploads/2016/01/gopher.png",
+			Copyright: "Copyright © 2019 tugolo. All rights reserved.",
 		},
 	}
 
@@ -51,13 +51,41 @@ func generate( /*username string*/ ) string /*,string*/ {
 	return emailBody /*,link*/
 }
 
+/*func Send(email, to, link, domain, apiKey, string) error{
+	mg := mailgun.NewMailgun(domain, apiKey)
+	m := mg.NewMessage(//from,subject,text,to
+			"Jordan <jordandesouza5@gmail.com>",//replace with actual email
+			"Verify your Email, Tugolo",
+			"You browser does not support html, click on the link to verify your account " + link,
+			to,
+	)
+	m.SetHtml(email)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
+	defer cancel()
+
+	_, id, err := mg.Send(ctx, m)
+	return id, err
+}
+
+func main(){
+	err := godotenv.Load()
+  	if err != nil {
+  	  log.Fatal("Error loading .env file")
+	  }
+	  apiKey := os.Getenv("API_key")
+	  url := os.Getenv("API_base_URL")
+	  domain := os.Getenv("DOMAIN")
+	  email,link := Generate()
+
+	  err := Send(email,"jordandesouza5@gmail.com", link, domain, apiKey)
+*/
 func SendSimpleMessage(domain, apiKey string) (string, error) {
 	mg := mailgun.NewMailgun(domain, apiKey)
-
 	m := mg.NewMessage(
-		"Excited User <mailgun@"+domain+">",
+		"Jordan <mailgun@"+domain+">",
 		"Hello",
-		"",
+		"hello",
 		"desouza.jordan@yahoo.ca",
 	)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
@@ -65,7 +93,6 @@ func SendSimpleMessage(domain, apiKey string) (string, error) {
 	html := generate()
 	m.SetHtml(html)
 	_, id, err := mg.Send(ctx, m)
-	fmt.Println(err)
 	return id, err
 }
 
@@ -77,9 +104,8 @@ func main() {
 	domain := os.Getenv("DOMAIN")
 	apiKey := os.Getenv("API_key")
 
-	id, er := SendSimpleMessage(domain, apiKey)
+	_, er := SendSimpleMessage(domain, apiKey)
 	if er != nil {
-		fmt.Println(id)
 		panic(err)
 	}
 }
