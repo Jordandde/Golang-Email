@@ -51,35 +51,6 @@ func generate( /*username string*/ ) string /*,string*/ {
 	return emailBody /*,link*/
 }
 
-/*func Send(email, to, link, domain, apiKey, string) error{
-	mg := mailgun.NewMailgun(domain, apiKey)
-	m := mg.NewMessage(//from,subject,text,to
-			"Jordan <jordandesouza5@gmail.com>",//replace with actual email
-			"Verify your Email, Tugolo",
-			"You browser does not support html, click on the link to verify your account " + link,
-			to,
-	)
-	m.SetHtml(email)
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
-	defer cancel()
-
-	_, id, err := mg.Send(ctx, m)
-	return id, err
-}
-
-func main(){
-	err := godotenv.Load()
-  	if err != nil {
-  	  log.Fatal("Error loading .env file")
-	  }
-	  apiKey := os.Getenv("API_key")
-	  url := os.Getenv("API_base_URL")
-	  domain := os.Getenv("DOMAIN")
-	  email,link := Generate()
-
-	  err := Send(email,"jordandesouza5@gmail.com", link, domain, apiKey)
-*/
 func SendSimpleMessage(domain, apiKey string) (string, error) {
 	mg := mailgun.NewMailgun(domain, apiKey)
 
